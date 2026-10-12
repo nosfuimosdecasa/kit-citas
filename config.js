@@ -78,7 +78,7 @@ const CONFIG = {
   // Respeta mayúsculas y minúsculas: "Logo.png" NO es igual a "logo.png".
   // Si todavía no tienes logo, deja: ""
   // ---------------------------------------------------------------
-  logo: "logo.png",
+  logo: "assets/logo.png",
 
   // ---------------------------------------------------------------
   // SERVICIOS Y PRECIOS
