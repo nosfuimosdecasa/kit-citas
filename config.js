@@ -34,7 +34,7 @@ const CONFIG = {
   // Formato: texto corto. Ejemplos: "Barbería", "Estética", "Gimnasio"
   // Si no lo quieres mostrar, déjalo así: ""
   // ---------------------------------------------------------------
-  giro: "Giro de ejemplo",
+  giro: "Negocio de ejemplo",
 
   // ---------------------------------------------------------------
   // DESCRIPCIÓN BREVE (1 o 2 frases)
