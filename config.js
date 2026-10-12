@@ -7,7 +7,8 @@
 //   3. NO borres las llaves { } ni los corchetes [ ] ni los dos puntos :
 //   4. Solo cambia lo que está DENTRO de las comillas (o el número).
 //
-// DATOS DE DEMOSTRACIÓN: todo lo que ves aquí es FICTICIO.
+// DATOS DE DEMOSTRACIÓN: lo que ves aquí es FICTICIO, salvo el
+// formulario de citas, que es el que ya creaste en Google Forms.
 // Antes de entregar la web a un cliente, reemplaza todo con sus datos
 // reales y cambia "modoDemo" a false.
 // =====================================================================
@@ -36,7 +37,7 @@ const CONFIG = {
   giro: "Giro de ejemplo",
 
   // ---------------------------------------------------------------
-  // PRESENTACIÓN BREVE (1 o 2 frases)
+  // DESCRIPCIÓN BREVE (1 o 2 frases)
   // Formato: texto entre comillas, en una sola línea.
   // Si no la quieres mostrar, déjala así: ""
   // ---------------------------------------------------------------
@@ -62,10 +63,10 @@ const CONFIG = {
   // ---------------------------------------------------------------
   // COLORES
   // Formato: "#" + 6 caracteres (números 0-9 y letras a-f).
-  // Ejemplos: "#1f2937" (gris oscuro), "#e11d48" (rojo), "#0d9488" (verde azulado)
+  // Ejemplos: "#1f2937" (gris azulado oscuro), "#e11d48" (rojo), "#0d9488" (verde azulado)
   // Para elegir colores: busca "selector de color" en Google y copia el código HEX.
-  //   colorPrincipal = color de fondo de la parte superior y de las etiquetas de precio.
-  //   colorAcento    = color de los botones (el botón de WhatsApp).
+  //   colorPrincipal = color del encabezado y de las etiquetas de precio.
+  //   colorAcento    = color de los botones (naranja por defecto).
   // Usa dos colores que contrasten entre sí.
   // ---------------------------------------------------------------
   colorPrincipal: "#1f2937",
@@ -73,12 +74,22 @@ const CONFIG = {
 
   // ---------------------------------------------------------------
   // LOGO
-  // Formato: nombre del archivo entre comillas, tal como lo subiste a GitHub.
-  // Ejemplo: "logo.png"  (el archivo debe estar en la misma carpeta que index.html)
+  // Formato: ruta del archivo entre comillas, tal como está en GitHub.
+  // Ejemplo recomendado: "assets/logo.png"
+  //   (carpeta "assets" dentro del repositorio, archivo "logo.png")
   // Respeta mayúsculas y minúsculas: "Logo.png" NO es igual a "logo.png".
-  // Si todavía no tienes logo, deja: ""
+  // Si todavía no tienes logo, deja: ""  (se oculta, sin imagen rota)
+  // Si escribes una ruta pero el archivo no está subido, el logo se oculta
+  // igualmente, aunque la consola del navegador mostrará un aviso 404.
   // ---------------------------------------------------------------
   logo: "assets/logo.png",
+
+  // ---------------------------------------------------------------
+  // ESQUINAS REDONDEADAS DEL LOGO
+  // true  = esquinas redondeadas.   false = esquinas rectas.
+  // Escribe solo true o false, SIN comillas.
+  // ---------------------------------------------------------------
+  logoRedondeado: true,
 
   // ---------------------------------------------------------------
   // SERVICIOS Y PRECIOS
@@ -86,7 +97,7 @@ const CONFIG = {
   //   nombre      : texto entre comillas.
   //   precio      : SOLO el número, SIN comillas, SIN signo $ ni comas.
   //                 Ejemplo: 150   o   149.50
-  //                 (la página lo mostrará como $150 o $149.50 MXN)
+  //                 (la página lo mostrará como $150 MXN o $149.50 MXN)
   //                 Si no quieres mostrar precio, escribe: null
   //   descripcion : texto corto. Es opcional; para omitirla deja: ""
   // PARA AÑADIR un servicio: copia un bloque completo { ... }, y pégalo
@@ -101,42 +112,7 @@ const CONFIG = {
   ],
 
   // ---------------------------------------------------------------
-  // HORARIO DE ATENCIÓN
-  // Cada línea es un bloque { dia: "...", horas: "..." } separado por coma.
-  // En "horas" escribe el horario en texto. Ejemplos: "10:00 - 19:00" o "Cerrado"
-  // Puedes agrupar días: dia: "Lunes a Viernes"
-  // Para no mostrar horario, deja la lista vacía así:  horario: [],
-  // ---------------------------------------------------------------
-  horario: [
-    { dia: "Lunes a Viernes", horas: "10:00 - 19:00" },
-    { dia: "Sábado", horas: "10:00 - 15:00" },
-    { dia: "Domingo", horas: "Cerrado" }
-  ],
-
-  // ---------------------------------------------------------------
-  // DIRECCIÓN
-  // Formato: texto entre comillas en una sola línea.
-  // Si no quieres mostrarla, deja: ""
-  // ---------------------------------------------------------------
-  direccion: "Calle de Ejemplo 123, Colonia Ejemplo, Ciudad de Ejemplo (dirección ficticia)",
-
-  // ---------------------------------------------------------------
-  // ENLACE DE GOOGLE MAPS
-  // Formato: enlace completo que EMPIECE con https://
-  // Cómo obtenerlo: en Google Maps busca el negocio > botón "Compartir"
-  // > "Copiar vínculo" y pégalo aquí entre comillas.
-  // Si no lo tienes, deja: ""  (el botón de Maps no aparecerá)
-  // El de abajo es genérico (abre Google Maps, sin ubicación real).
-  // ---------------------------------------------------------------
-  enlaceMaps: "https://www.google.com/maps",
-
-  // ---------------------------------------------------------------
-  // ENLACE DE INSTAGRAM
-  // Formato: enlace completo que EMPIECE con https://
-  // Ejemplo: "https://www.instagram.com/nombredeusuario/"
-  // Si no tiene Instagram, deja: ""  (esa sección desaparece)
-  // El de abajo es genérico (abre la portada de Instagram).
-  // ---------------------------------------------------------------
-  enlaceInstagram: "https://www.instagram.com/"
-
-};
+  // FORMULARIO DE CITAS (GOOGLE FORMS)
+  // Tienes dos variables. La página decide qué mostrar así:
+  //   - Si llenas formularioUrlIncrustar: muestra el formulario DENTRO de la página.
+  //   - Si solo llenas formularioUrlPublica:
