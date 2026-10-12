@@ -58,6 +58,7 @@
     }
     .hero h1 { margin: 0 0 12px; font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.15; }
     .presentacion { margin: 0 auto 24px; max-width: 560px; font-size: 1.1rem; opacity: 0.95; }
+    .hero-botones { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
     .nota { margin: 14px auto 0; max-width: 460px; font-size: 0.85rem; opacity: 0.8; }
 
     .btn {
@@ -96,6 +97,24 @@
       background: var(--principal); color: var(--on-principal); font-weight: 700;
     }
 
+    /* ---------- Formulario de solicitud de cita ---------- */
+    .seccion-formulario { background: #ecece8; }
+    .intro-formulario {
+      margin: -8px auto 22px; max-width: 560px; text-align: center; color: #444; font-size: 1rem;
+    }
+    .tarjeta-formulario {
+      max-width: 680px; margin: 0 auto; background: var(--tarjeta);
+      border: 1px solid var(--borde); border-top: 6px solid var(--acento);
+      border-radius: 14px; padding: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+    .marco-formulario {
+      display: block; width: 100%; height: 1146px; border: 0; border-radius: 8px; background: #ffffff;
+    }
+    .nota-formulario {
+      max-width: 680px; margin: 14px auto 0; text-align: center; font-size: 0.9rem; color: #555;
+    }
+    .enlace-formulario { color: var(--principal); font-weight: 600; }
+
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 22px; }
     .tarjeta h3 { margin: 0 0 14px; font-size: 1.2rem; }
@@ -116,6 +135,13 @@
     .flotante { position: fixed; right: 16px; bottom: 16px; z-index: 10; padding: 12px 20px; font-size: 0.95rem; }
 
     @media (min-width: 700px) { .hero { padding: 72px 0 80px; } }
+
+    /* En celulares el formulario es más angosto y por tanto más alto */
+    @media (max-width: 640px) {
+      .tarjeta-formulario { padding: 6px; }
+      .marco-formulario { height: 1400px; }
+      .contenedor { padding: 0 14px; }
+    }
   </style>
 </head>
 <body>
@@ -140,7 +166,10 @@
         <p id="giro" class="giro" hidden></p>
         <h1 id="nombreHero"></h1>
         <p id="presentacion" class="presentacion" hidden></p>
-        <a id="btnWhatsHero" class="btn btn-acento" target="_blank" rel="noopener" hidden>Solicitar cita por WhatsApp</a>
+        <div class="hero-botones">
+          <a id="btnWhatsHero" class="btn btn-acento" target="_blank" rel="noopener" hidden>Solicitar cita por WhatsApp</a>
+          <a id="btnIrFormulario" class="btn btn-borde" href="#solicitar" hidden>Llenar solicitud en línea</a>
+        </div>
         <p id="notaWhats" class="nota" hidden>Se abrirá WhatsApp con un mensaje listo para enviar. La cita no queda reservada hasta que el negocio te confirme.</p>
       </div>
     </section>
@@ -149,6 +178,20 @@
       <div class="contenedor">
         <h2>Servicios y precios</h2>
         <ul id="listaServicios" class="lista-servicios"></ul>
+      </div>
+    </section>
+
+    <section id="solicitar" class="seccion-formulario" hidden>
+      <div class="contenedor">
+        <h2>Solicita tu cita</h2>
+        <p class="intro-formulario">Llena el formulario con tus datos y el horario que prefieres. Es una <strong>solicitud</strong>: la cita queda <strong>pendiente de confirmación</strong> hasta que el negocio te responda.</p>
+        <div class="tarjeta-formulario">
+          <iframe id="marcoFormulario" class="marco-formulario" title="Formulario para solicitar una cita" loading="lazy" scrolling="auto">Cargando formulario…</iframe>
+        </div>
+        <p class="nota-formulario">
+          ¿No se ve el formulario?
+          <a id="enlaceFormulario" class="enlace-formulario" target="_blank" rel="noopener">Ábrelo en una pestaña nueva</a>.
+        </p>
       </div>
     </section>
 
@@ -201,6 +244,14 @@
   (function () {
     "use strict";
 
+    // =================================================================
+    // FORMULARIO DE GOOGLE FORMS
+    // Este es el enlace del formulario (parte "src" del código de inserción).
+    // Para otro negocio, cambia SOLO el enlace entre comillas por el de su formulario.
+    // Para ocultar la sección del formulario, deja: ""
+    // =================================================================
+    var URL_FORMULARIO = "https://docs.google.com/forms/d/e/1FAIpQLSfDXps4rm2HBE6cMAMt-v2ZKn6IDxthkk2sK9IkFZv4KITTfg/viewform?embedded=true";
+
     function $(id) { return document.getElementById(id); }
 
     function mostrarError(mensaje) {
@@ -224,6 +275,9 @@
     }
     function esUrlHttps(valor) {
       return /^https:\/\/\S+$/i.test(texto(valor));
+    }
+    function esUrlFormulario(valor) {
+      return /^https:\/\/docs\.google\.com\/forms\/\S+$/i.test(texto(valor));
     }
     function esColorHex(valor) {
       return /^#[0-9a-f]{6}$/i.test(texto(valor));
@@ -325,6 +379,19 @@
       totalServicios++;
     });
     if (totalServicios > 0) { $("seccionServicios").hidden = false; }
+
+    // ---------- Formulario de solicitud de cita ----------
+    // Solo se muestra si el enlace es un formulario válido de Google Forms.
+    var urlFormulario = texto(URL_FORMULARIO);
+    if (esUrlFormulario(urlFormulario)) {
+      $("marcoFormulario").src = urlFormulario;
+      // Enlace para abrir el formulario en pestaña nueva (sin el modo "embebido")
+      $("enlaceFormulario").href = urlFormulario.replace("?embedded=true", "").replace("&embedded=true", "");
+      $("solicitar").hidden = false;
+      $("btnIrFormulario").hidden = false;
+    } else if (urlFormulario) {
+      console.warn("index.html: URL_FORMULARIO no parece un enlace de Google Forms. Se ocultó el formulario.");
+    }
 
     // ---------- Horario ----------
     var horario = Array.isArray(C.horario) ? C.horario : [];
