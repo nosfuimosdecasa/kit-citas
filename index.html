@@ -244,4 +244,260 @@
       </div>
     </section>
 
-    <section id="seccionInstagram" class="centro"
+    <section id="seccionInstagram" class="centro" hidden>
+      <div class="contenedor">
+        <h2>Síguenos</h2>
+        <a id="btnInstagram" class="btn btn-borde" target="_blank" rel="noopener">Ver Instagram</a>
+      </div>
+    </section>
+
+    <section id="seccionCta" class="cta-final" hidden>
+      <div class="contenedor">
+        <h2>¿Quieres agendar?</h2>
+        <a id="btnWhatsFinal" class="btn btn-acento" target="_blank" rel="noopener">Solicitar cita por WhatsApp</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="contenedor">
+      <p id="pie"></p>
+    </div>
+  </footer>
+
+  <a id="btnWhatsFlotante" class="btn btn-acento flotante" target="_blank" rel="noopener" hidden>💬 WhatsApp</a>
+
+  <!-- 1) Carga los datos del negocio -->
+  <script src="config.js"></script>
+
+  <!-- 2) Construye la página con esos datos -->
+  <script>
+  (function () {
+    "use strict";
+
+    function $(id) { return document.getElementById(id); }
+
+    function mostrarError(mensaje) {
+      var caja = $("errorConfig");
+      caja.textContent = mensaje;
+      caja.hidden = false;
+      $("contenido").hidden = true;
+    }
+
+    // Si config.js no cargó o tiene un error de sintaxis, CONFIG no existe.
+    if (typeof CONFIG === "undefined" || CONFIG === null || typeof CONFIG !== "object") {
+      mostrarError("No se pudieron cargar los datos del negocio. Revisa que el archivo config.js esté en la misma carpeta que index.html, con ese nombre exacto, y que no tenga errores (comas, comillas o llaves faltantes).");
+      return;
+    }
+
+    var C = CONFIG;
+
+    // ---------- Utilidades ----------
+    function texto(valor) {
+      return (typeof valor === "string") ? valor.trim() : "";
+    }
+    function esUrlHttps(valor) {
+      return /^https:\/\/\S+$/i.test(texto(valor));
+    }
+    function esUrlIncrustable(valor) {
+      return /^https:\/\/docs\.google\.com\/forms\/\S+$/i.test(texto(valor));
+    }
+    function esUrlFormularioPublico(valor) {
+      return /^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)\S+$/i.test(texto(valor));
+    }
+    function esColorHex(valor) {
+      return /^#[0-9a-f]{6}$/i.test(texto(valor));
+    }
+    function colorTextoSobre(hex) {
+      var r = parseInt(hex.slice(1, 3), 16);
+      var g = parseInt(hex.slice(3, 5), 16);
+      var b = parseInt(hex.slice(5, 7), 16);
+      var luminosidad = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      return luminosidad > 0.6 ? "#111111" : "#ffffff";
+    }
+    function formatoPesos(numero) {
+      var decimales = (Math.round(numero) === numero) ? 0 : 2;
+      return new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+        minimumFractionDigits: decimales,
+        maximumFractionDigits: 2
+      }).format(numero) + " MXN";
+    }
+    function crear(etiqueta, clase, contenido) {
+      var el = document.createElement(etiqueta);
+      if (clase) { el.className = clase; }
+      if (contenido) { el.textContent = contenido; }
+      return el;
+    }
+
+    // ---------- Colores ----------
+    var raiz = document.documentElement;
+    if (esColorHex(C.colorPrincipal)) {
+      raiz.style.setProperty("--principal", texto(C.colorPrincipal));
+      raiz.style.setProperty("--on-principal", colorTextoSobre(texto(C.colorPrincipal)));
+    }
+    if (esColorHex(C.colorAcento)) {
+      raiz.style.setProperty("--acento", texto(C.colorAcento));
+      raiz.style.setProperty("--on-acento", colorTextoSobre(texto(C.colorAcento)));
+    }
+
+    // ---------- Nombre, título y descripción ----------
+    var nombre = texto(C.nombreNegocio) || "Mi negocio";
+    var giro = texto(C.giro);
+    document.title = giro ? (nombre + " | " + giro) : nombre;
+    $("nombreCabecera").textContent = nombre;
+    $("nombreHero").textContent = nombre;
+
+    var presentacion = texto(C.presentacion);
+    $("metaDescripcion").setAttribute("content", presentacion || nombre);
+
+    if (giro) { $("giro").textContent = giro; $("giro").hidden = false; }
+    if (presentacion) { $("presentacion").textContent = presentacion; $("presentacion").hidden = false; }
+
+    // ---------- Aviso de demostración ----------
+    if (C.modoDemo === true) { $("avisoDemo").hidden = false; }
+
+    // ---------- Logo (solo se muestra si carga bien) ----------
+    var rutaLogo = texto(C.logo);
+    if (rutaLogo) {
+      var img = $("logo");
+      if (C.logoRedondeado !== false) { img.classList.add("redondo"); }
+      img.alt = "Logo de " + nombre;
+      img.onload = function () { img.hidden = false; };
+      img.onerror = function () { img.hidden = true; };
+      img.src = rutaLogo;
+    }
+
+    // ---------- WhatsApp ----------
+    var digitos = texto(String(C.telefonoWhatsApp == null ? "" : C.telefonoWhatsApp)).replace(/\D/g, "");
+    if (digitos.length === 10) { digitos = "52" + digitos; }
+    var telefonoValido = digitos.length >= 11 && digitos.length <= 15;
+
+    if (telefonoValido) {
+      var mensaje = texto(C.mensajeWhatsApp) || "Hola, me gustaría solicitar una cita en {negocio}.";
+      mensaje = mensaje.split("{negocio}").join(nombre);
+      var enlaceWhats = "https://wa.me/" + digitos + "?text=" + encodeURIComponent(mensaje);
+
+      ["btnWhatsHero", "btnWhatsFinal", "btnWhatsFlotante"].forEach(function (id) {
+        $(id).href = enlaceWhats;
+        $(id).hidden = false;
+      });
+      $("notaWhats").hidden = false;
+      $("seccionCta").hidden = false;
+    } else {
+      console.warn("config.js: telefonoWhatsApp no es válido. Se ocultaron los botones de WhatsApp.");
+    }
+
+    // ---------- Servicios ----------
+    var servicios = Array.isArray(C.servicios) ? C.servicios : [];
+    var lista = $("listaServicios");
+    var totalServicios = 0;
+    servicios.forEach(function (s) {
+      if (!s || typeof s !== "object" || !texto(s.nombre)) { return; }
+      var item = crear("li", "servicio");
+      item.appendChild(crear("h3", "", texto(s.nombre)));
+      if (texto(s.descripcion)) { item.appendChild(crear("p", "", texto(s.descripcion))); }
+      var precioTexto = (typeof s.precio === "number" && isFinite(s.precio) && s.precio >= 0)
+        ? formatoPesos(s.precio)
+        : "Consultar precio";
+      item.appendChild(crear("span", "precio", precioTexto));
+      lista.appendChild(item);
+      totalServicios++;
+    });
+    if (totalServicios > 0) { $("seccionServicios").hidden = false; }
+
+    // ---------- Formulario de solicitud de cita (Google Forms) ----------
+    var urlIncrustar = esUrlIncrustable(C.formularioUrlIncrustar) ? texto(C.formularioUrlIncrustar) : "";
+    var urlPublica = esUrlFormularioPublico(C.formularioUrlPublica) ? texto(C.formularioUrlPublica) : "";
+
+    if (texto(C.formularioUrlIncrustar) && !urlIncrustar) {
+      console.warn("config.js: formularioUrlIncrustar no parece un enlace de Google Forms. Se ignoró.");
+    }
+    if (texto(C.formularioUrlPublica) && !urlPublica) {
+      console.warn("config.js: formularioUrlPublica no parece un enlace de Google Forms. Se ignoró.");
+    }
+
+    // Si falta "embedded=true" en el enlace de inserción, se agrega.
+    if (urlIncrustar && urlIncrustar.indexOf("embedded=true") === -1) {
+      urlIncrustar += (urlIncrustar.indexOf("?") === -1 ? "?" : "&") + "embedded=true";
+    }
+    // Si no hay enlace público pero sí de inserción, se deriva quitando "embedded=true".
+    if (!urlPublica && urlIncrustar) {
+      urlPublica = urlIncrustar.replace("?embedded=true&", "?").replace(/[?&]embedded=true/, "");
+    }
+
+    var btnHero = $("btnSolicitarHero");
+    if (urlIncrustar) {
+      // Formulario dentro de la página. El botón superior baja hasta él.
+      $("marcoFormulario").src = urlIncrustar;
+      $("formEmbed").hidden = false;
+      btnHero.href = "#solicitar";
+      btnHero.hidden = false;
+      if (urlPublica) {
+        $("enlaceFormulario").href = urlPublica;
+        $("notaAbrirForm").hidden = false;
+      }
+    } else if (urlPublica) {
+      // Solo hay enlace público: botón que abre el formulario en otra pestaña.
+      $("btnFormulario").href = urlPublica;
+      $("formBoton").hidden = false;
+      btnHero.href = urlPublica;
+      btnHero.target = "_blank";
+      btnHero.rel = "noopener";
+      btnHero.hidden = false;
+    } else {
+      // Sin formulario configurado: mensaje claro, sin enlaces falsos.
+      $("formNoConfig").hidden = false;
+    }
+
+    // ---------- Horario ----------
+    var horario = Array.isArray(C.horario) ? C.horario : [];
+    var contHorario = $("listaHorario");
+    var totalHorario = 0;
+    horario.forEach(function (h) {
+      if (!h || typeof h !== "object" || !texto(h.dia)) { return; }
+      var fila = crear("div", "fila-horario");
+      fila.appendChild(crear("span", "", texto(h.dia)));
+      fila.appendChild(crear("span", "", texto(h.horas)));
+      contHorario.appendChild(fila);
+      totalHorario++;
+    });
+    if (totalHorario > 0) { $("cardHorario").hidden = false; }
+
+    // ---------- Dirección y Google Maps ----------
+    var direccion = texto(C.direccion);
+    var tieneUbicacion = false;
+    if (direccion) {
+      $("direccion").textContent = direccion;
+      $("direccion").hidden = false;
+      tieneUbicacion = true;
+    }
+    if (esUrlHttps(C.enlaceMaps)) {
+      $("btnMaps").href = texto(C.enlaceMaps);
+      $("btnMaps").hidden = false;
+      tieneUbicacion = true;
+    }
+    if (tieneUbicacion) { $("cardUbicacion").hidden = false; }
+
+    if (totalHorario > 0 || tieneUbicacion) { $("seccionInfo").hidden = false; }
+
+    // ---------- Instagram ----------
+    if (esUrlHttps(C.enlaceInstagram)) {
+      var etiquetaIg = "Ver Instagram";
+      try {
+        var partes = new URL(texto(C.enlaceInstagram)).pathname.split("/").filter(Boolean);
+        if (partes.length > 0) { etiquetaIg = "Instagram @" + partes[0]; }
+      } catch (e) { /* si falla, se queda el texto genérico */ }
+      $("btnInstagram").textContent = etiquetaIg;
+      $("btnInstagram").href = texto(C.enlaceInstagram);
+      $("seccionInstagram").hidden = false;
+    }
+
+    // ---------- Pie de página ----------
+    $("pie").textContent = "© " + new Date().getFullYear() + " " + nombre;
+  })();
+  </script>
+</body>
+</html>
