@@ -1,503 +1,757 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cargando…</title>
-  <meta name="description" content="" id="metaDescripcion">
-  <!-- Icono vacío para evitar el error 404 de favicon en la consola -->
-  <link rel="icon" href="data:,">
-  <style>
-    :root {
-      --principal: #1f2937;
-      --acento: #f59e0b;
-      --on-principal: #ffffff;
-      --on-acento: #111111;
-      --texto: #1b1b1b;
-      --fondo: #f6f6f4;
-      --tarjeta: #ffffff;
-      --borde: #e5e5e0;
-    }
-    * { box-sizing: border-box; }
-    [hidden] { display: none !important; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      padding-bottom: 80px;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      color: var(--texto);
-      background: var(--fondo);
-      line-height: 1.5;
-    }
-    .contenedor { width: 100%; max-width: 960px; margin: 0 auto; padding: 0 20px; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cargando…</title>
+<meta name="description" content="" id="metaDescripcion">
+<meta name="theme-color" content="#0c0c0c">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap">
+<style>
+:root{--negro:#0c0c0c;--negro2:#151515;--negro3:#1f1f1f;--oro:#c9a24b;--oro-rgb:201,162,75;--oro-osc:#8a6b22;--on-oro:#111;--crema:#f3ead8;--crema2:#e7dcc3;--tx:#efe7d6;--tx2:#a9a293;--serif:"Playfair Display",Georgia,"Times New Roman",serif;--sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:76px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--negro);color:var(--tx);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+body.sin-scroll{overflow:hidden}
+img{max-width:100%}
+a{color:inherit}
+.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 24px}
+section{position:relative;padding:104px 0}
+:focus-visible{outline:2px solid var(--oro);outline-offset:3px}
 
-    .aviso-demo {
-      background: #fde68a; color: #422006; text-align: center;
-      padding: 8px 12px; font-size: 0.9rem; font-weight: 600;
-    }
-    .error-config {
-      background: #fee2e2; color: #7f1d1d; padding: 20px; margin: 20px;
-      border-radius: 10px; border: 1px solid #fca5a5; font-size: 1rem;
-    }
+/* ---- Avisos ---- */
+.aviso{position:fixed;left:12px;bottom:12px;z-index:70;background:#fde68a;color:#422006;font:600 .72rem var(--sans);padding:6px 12px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.error-config{background:#fee2e2;color:#7f1d1d;padding:20px;margin:20px;border-radius:10px;border:1px solid #fca5a5}
+.prog{position:fixed;top:0;left:0;right:0;height:3px;background:var(--oro);transform:scaleX(0);transform-origin:0 50%;z-index:90}
 
-    /* ---------- Encabezado con logo ---------- */
-    .cabecera { background: var(--principal); color: var(--on-principal); }
-    .cabecera-interior {
-      display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
-      padding-top: 14px; padding-bottom: 14px;
-    }
-    .logo { display: block; height: 48px; width: auto; max-width: 160px; object-fit: contain; }
-    .logo.redondo { border-radius: 10px; }
-    .nombre-cabecera { font-weight: 700; font-size: 1.1rem; min-width: 0; overflow-wrap: anywhere; }
+/* ---- Cabecera ---- */
+.cab{position:fixed;top:0;left:0;right:0;z-index:80;transition:transform .4s var(--ease)}
+.cab::before{content:"";position:absolute;inset:0;background:rgba(12,12,12,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(var(--oro-rgb),.25);opacity:0;transition:opacity .4s}
+.cab.solida::before{opacity:1}
+.cab-in{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;height:76px;max-width:1160px;margin:0 auto;padding:0 24px}
+.marca{position:relative;z-index:3;display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.logo{display:block;height:44px;width:auto;max-width:130px;object-fit:contain}
+.logo.redondo{border-radius:8px}
+.marca-n{font-family:var(--serif);font-weight:700;font-size:1.2rem;letter-spacing:.02em;overflow-wrap:anywhere}
+.nav{display:flex;align-items:center;gap:30px}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.nav a.enl{position:relative;font:500 .78rem var(--sans);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:6px 0;color:var(--tx);transition:color .3s}
+.nav a.enl::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--oro);transform:scaleX(0);transform-origin:0 50%;transition:transform .4s var(--ease)}
+.nav a.enl:hover,.nav a.enl.activo{color:var(--oro)}
+.nav a.enl:hover::after,.nav a.enl.activo::after{transform:scaleX(1)}
+.burger{display:none;position:relative;z-index:3;width:44px;height:44px;background:none;border:0;cursor:pointer;padding:0}
+.burger span{position:absolute;left:10px;right:10px;height:2px;background:var(--tx);transition:transform .4s var(--ease),opacity .3s,top .4s var(--ease)}
+.burger span:nth-child(1){top:14px}.burger span:nth-child(2){top:21px}.burger span:nth-child(3){top:28px}
+.burger[aria-expanded="true"] span:nth-child(1){top:21px;transform:rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){top:21px;transform:rotate(-45deg)}
 
-    .hero {
-      background: linear-gradient(160deg, var(--principal), var(--principal));
-      color: var(--on-principal);
-      padding: 48px 0 56px;
-      text-align: center;
-    }
-    .giro {
-      display: inline-block; margin: 0 0 12px; padding: 4px 14px;
-      border: 1px solid currentColor; border-radius: 999px;
-      font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.9;
-    }
-    .hero h1 { margin: 0 0 12px; font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.15; overflow-wrap: anywhere; }
-    .presentacion { margin: 0 auto 24px; max-width: 560px; font-size: 1.1rem; opacity: 0.95; }
-    .hero-botones { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-    .nota { margin: 14px auto 0; max-width: 460px; font-size: 0.85rem; opacity: 0.8; }
+/* ---- Botones ---- */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 30px;border-radius:2px;font:600 .8rem var(--sans);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;text-align:center;border:1px solid var(--oro);cursor:pointer;transition:transform .35s var(--ease),background .35s,color .35s,box-shadow .35s}
+.btn::after{content:"";position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-20deg);transition:left .8s var(--ease)}
+.btn:hover::after{left:150%}
+.btn:hover{transform:translateY(-3px)}
+.btn-oro{background:var(--oro);color:var(--on-oro)}
+.btn-oro:hover{box-shadow:0 10px 28px rgba(var(--oro-rgb),.35)}
+.btn-linea{background:transparent;color:var(--oro)}
+.btn-linea:hover{background:var(--oro);color:var(--on-oro)}
+.btn-osc{background:var(--negro);color:var(--crema);border-color:var(--negro)}
+.btn-osc:hover{box-shadow:0 10px 28px rgba(0,0,0,.3)}
+.btn-sm{padding:11px 20px;font-size:.72rem}
 
-    .btn {
-      display: inline-block; padding: 14px 28px; border-radius: 999px;
-      font-size: 1.05rem; font-weight: 700; text-decoration: none; cursor: pointer;
-      border: 0; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-      transition: transform 0.15s ease; text-align: center;
-    }
-    .btn:hover { transform: translateY(-2px); }
-    .btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
-    .seccion-formulario .btn:focus-visible,
-    .btn-borde:focus-visible { outline-color: var(--principal); }
-    .btn-acento { background: var(--acento); color: var(--on-acento); }
-    .btn-borde {
-      background: var(--tarjeta); color: var(--texto); border: 2px solid var(--principal);
-      box-shadow: none; padding: 10px 22px; font-size: 0.95rem;
-    }
+/* ---- Revelado al desplazarse ---- */
+[data-r]{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0ms)}
+[data-r="izq"]{transform:translateX(-40px)}
+[data-r="der"]{transform:translateX(40px)}
+[data-r="zoom"]{transform:scale(.92)}
+[data-r].vis{opacity:1;transform:none}
 
-    section { padding: 44px 0; }
-    h2 { margin: 0 0 22px; font-size: 1.6rem; text-align: center; }
-    h2::after {
-      content: ""; display: block; width: 56px; height: 4px; margin: 10px auto 0;
-      background: var(--acento); border-radius: 4px;
-    }
+/* ---- Titulares de sección ---- */
+.eyebrow{display:inline-flex;align-items:center;gap:14px;margin:0 0 16px;font:600 .74rem var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--oro)}
+.eyebrow::before{content:"";width:36px;height:1px;background:currentColor}
+.sec-t{margin:0 0 20px;font-family:var(--serif);font-weight:700;font-size:clamp(2rem,5vw,3.3rem);line-height:1.08}
+.sec-t em{font-style:italic;font-weight:500;color:var(--oro)}
+.sec-p{margin:0 0 28px;color:var(--tx2);max-width:520px}
+.centro{text-align:center}
+.centro .sec-p{margin-left:auto;margin-right:auto}
 
-    .lista-servicios {
-      list-style: none; margin: 0; padding: 0;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;
-    }
-    .servicio {
-      background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px;
-      padding: 18px; display: flex; flex-direction: column; gap: 8px;
-    }
-    .servicio h3 { margin: 0; font-size: 1.1rem; }
-    .servicio p { margin: 0; color: #555; font-size: 0.95rem; }
-    .precio {
-      align-self: flex-start; margin-top: auto; padding: 4px 14px; border-radius: 999px;
-      background: var(--principal); color: var(--on-principal); font-weight: 700;
-    }
+/* ---- Portada ---- */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:130px 0 100px;overflow:hidden;background:radial-gradient(900px 520px at 78% 18%,rgba(var(--oro-rgb),.2),transparent 62%),repeating-linear-gradient(-45deg,rgba(255,255,255,.025) 0 2px,transparent 2px 16px),linear-gradient(180deg,var(--negro2),var(--negro))}
+.hero-media{position:absolute;left:0;right:0;top:-25%;height:125%;will-change:transform}
+.hero-img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s;animation:kb 24s ease-in-out infinite alternate}
+.hero-img.cargada{opacity:1}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.15)}}
+.hero-vel{position:absolute;inset:0;opacity:0;transition:opacity 1.2s;background:linear-gradient(90deg,rgba(0,0,0,.86),rgba(0,0,0,.4) 62%,rgba(0,0,0,.6)),linear-gradient(0deg,var(--negro),transparent 32%)}
+.con-foto .hero-vel{opacity:1}
+.hero-in{position:relative;z-index:2}
+.hero .eyebrow{animation:aparece 1s .1s both}
+.titular{margin:0 0 24px;max-width:860px;font-family:var(--serif);font-weight:700;font-size:clamp(2.7rem,8.2vw,5.8rem);line-height:1.02;letter-spacing:-.01em}
+.palabra{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-right:.26em}
+.palabra>span{display:inline-block;transform:translateY(112%);animation:subir 1s var(--ease) forwards;animation-delay:calc(var(--i)*110ms + 300ms)}
+.palabra.acento>span{font-style:italic;font-weight:500;color:var(--oro)}
+@keyframes subir{to{transform:none}}
+@keyframes aparece{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.hero-p{max-width:540px;margin:0 0 34px;font-size:1.12rem;color:#d8d0bf;animation:aparece 1s 1s both}
+.hero-btns{display:flex;flex-wrap:wrap;gap:14px;animation:aparece 1s 1.2s both}
+.nota{max-width:480px;margin:18px 0 0;font-size:.82rem;color:var(--tx2);animation:aparece 1s 1.4s both}
+.scroll-ind{position:absolute;z-index:2;left:50%;bottom:26px;width:26px;height:44px;margin-left:-13px;border:1px solid rgba(var(--oro-rgb),.7);border-radius:14px}
+.scroll-ind span{position:absolute;left:50%;top:8px;width:3px;height:8px;margin-left:-1.5px;border-radius:2px;background:var(--oro);animation:rueda 1.8s ease-in-out infinite}
+@keyframes rueda{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(18px)}}
 
-    /* ---------- Sección "Solicita tu cita" ---------- */
-    .seccion-formulario { background: #ecece8; }
-    .intro-formulario {
-      margin: -8px auto 22px; max-width: 560px; text-align: center; color: #444; font-size: 1rem;
-    }
-    .tarjeta-formulario {
-      max-width: 680px; margin: 0 auto; background: var(--tarjeta);
-      border: 1px solid var(--borde); border-top: 6px solid var(--acento);
-      border-radius: 14px; padding: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    }
-    .marco-formulario {
-      display: block; width: 100%; max-width: 100%; height: 1146px;
-      border: 0; border-radius: 8px; background: #ffffff;
-    }
-    .nota-formulario {
-      max-width: 680px; margin: 14px auto 0; text-align: center; font-size: 0.9rem; color: #555;
-    }
-    .enlace-formulario { color: var(--principal); font-weight: 600; }
-    .caja-formulario {
-      max-width: 680px; margin: 0 auto; text-align: center; background: var(--tarjeta);
-      border: 1px solid var(--borde); border-top: 6px solid var(--acento);
-      border-radius: 14px; padding: 28px 20px;
-    }
-    .caja-formulario p { margin: 0 0 18px; color: #444; }
-    .caja-formulario p:last-child { margin-bottom: 0; }
-    .sin-configurar { color: #555; font-style: italic; }
+/* ---- Poste de barbero y franja ---- */
+.poste{height:8px;background:repeating-linear-gradient(-45deg,var(--oro) 0 10px,var(--negro) 10px 20px,var(--crema) 20px 30px,var(--negro) 30px 40px)}
+.marq{overflow:hidden;background:var(--oro);color:var(--on-oro);padding:15px 0;white-space:nowrap}
+.marq-pista{display:inline-flex;animation:marq 34s linear infinite}
+.marq:hover .marq-pista{animation-play-state:paused}
+.marq-g{display:inline-flex;align-items:center}
+.marq-g span{padding:0 24px;font-family:var(--serif);font-size:1.1rem;letter-spacing:.14em;text-transform:uppercase}
+.marq-g i{font-style:normal;font-size:.8rem}
+@keyframes marq{to{transform:translateX(-50%)}}
 
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-    .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 22px; }
-    .tarjeta h3 { margin: 0 0 14px; font-size: 1.2rem; }
-    .fila-horario {
-      display: flex; justify-content: space-between; gap: 12px;
-      padding: 8px 0; border-bottom: 1px solid var(--borde);
-    }
-    .fila-horario:last-child { border-bottom: 0; }
-    .fila-horario span:first-child { font-weight: 600; }
-    .direccion { margin: 0 0 16px; }
+/* ---- Servicios ---- */
+.svc-lista{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 64px}
+.svc{position:relative;display:grid;grid-template-columns:auto 1fr;gap:20px;padding:28px 0;border-bottom:1px solid rgba(var(--oro-rgb),.22);transition:padding .45s var(--ease)}
+.svc::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--oro);transition:width .7s var(--ease)}
+.svc:hover{padding-left:12px}
+.svc:hover::after{width:100%}
+.svc-n{font-family:var(--serif);font-size:1.7rem;line-height:1.2;color:rgba(var(--oro-rgb),.5);transition:color .4s}
+.svc:hover .svc-n{color:var(--oro)}
+.svc-top{display:flex;align-items:baseline;gap:12px}
+.svc-top h3{margin:0;font-family:var(--serif);font-weight:500;font-size:1.4rem;line-height:1.25}
+.svc-pt{flex:1;min-width:14px;border-bottom:1px dotted rgba(var(--oro-rgb),.5);transform:translateY(-5px)}
+.svc-precio{font-weight:600;color:var(--oro);white-space:nowrap}
+.svc-precio.consulta{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2)}
+.svc p{margin:6px 0 0;color:var(--tx2);font-size:.95rem}
+.etiqueta{display:inline-block;margin-top:10px;padding:2px 10px;border:1px solid var(--oro);font:600 .66rem var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.svc-cta{margin-top:44px}
 
-    .centro { text-align: center; }
-    .cta-final { background: var(--principal); color: var(--on-principal); text-align: center; }
-    .cta-final h2::after { background: var(--acento); }
+/* ---- Por qué elegirnos (fondo crema) ---- */
+.claro{background:var(--crema);color:var(--negro)}
+.claro .eyebrow{color:var(--oro-osc)}
+.claro .sec-t em{color:var(--oro-osc)}
+.claro .sec-p{color:#4a463d}
+.nos-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:64px;align-items:start}
+.cifras{display:flex;flex-wrap:wrap;gap:32px 40px;margin-top:36px;padding-top:30px;border-top:1px solid rgba(0,0,0,.18)}
+.cifra b{display:block;font-family:var(--serif);font-size:2.6rem;line-height:1;color:var(--oro-osc)}
+.cifra span{display:block;margin-top:6px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#4a463d}
+.ben-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.ben{padding:30px 26px;background:#fbf6ea;border-top:3px solid var(--oro);transition:transform .45s var(--ease),box-shadow .45s}
+.ben:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,.12)}
+.ben-i{display:block;margin-bottom:14px;font-size:1.3rem;color:var(--oro-osc);transition:transform .6s var(--ease)}
+.ben:hover .ben-i{transform:rotate(180deg) scale(1.2)}
+.ben h3{margin:0 0 8px;font-family:var(--serif);font-size:1.25rem}
+.ben p{margin:0;font-size:.93rem;color:#4a463d}
 
-    footer { padding: 24px 0 8px; text-align: center; font-size: 0.85rem; color: #666; }
+/* ---- Galería ---- */
+.gal{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:230px;grid-auto-flow:dense;gap:14px;margin-top:48px}
+.g{position:relative;display:block;padding:0;border:0;overflow:hidden;cursor:zoom-in;background:linear-gradient(135deg,var(--negro3),var(--negro2))}
+.g:nth-child(1){grid-row:span 2}
+.g:nth-child(4){grid-column:span 2}
+.g img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease),filter .6s;filter:grayscale(.25) contrast(1.05)}
+.g::after{content:"+";position:absolute;inset:12px;display:flex;align-items:center;justify-content:center;font:300 2.6rem var(--serif);color:var(--oro);border:1px solid var(--oro);opacity:0;transform:scale(.94);transition:opacity .5s,transform .5s var(--ease);background:rgba(0,0,0,.35)}
+.g:hover img{transform:scale(1.09);filter:none}
+.g:hover::after,.g:focus-visible::after{opacity:1;transform:none}
+.lb{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.94);padding:50px 16px;animation:aparece .3s both}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;box-shadow:0 20px 80px rgba(0,0,0,.6)}
+.lb button{position:absolute;width:48px;height:48px;background:none;border:1px solid rgba(var(--oro-rgb),.6);color:var(--oro);font-size:1.5rem;cursor:pointer;transition:background .3s,color .3s}
+.lb button:hover{background:var(--oro);color:var(--on-oro)}
+.lb-x{top:14px;right:14px}.lb-a{left:12px;top:50%;margin-top:-24px}.lb-s{right:12px;top:50%;margin-top:-24px}
 
-    .flotante { position: fixed; right: 16px; bottom: 16px; z-index: 10; padding: 12px 20px; font-size: 0.95rem; }
+/* ---- Solicitar cita ---- */
+.sol{background:linear-gradient(180deg,var(--negro2),var(--negro))}
+.sol-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:60px;align-items:start}
+.pasos{list-style:none;margin:0 0 30px;padding:0;counter-reset:p}
+.pasos li{position:relative;padding:0 0 22px 56px;counter-increment:p;color:#d8d0bf}
+.pasos li::before{content:counter(p);position:absolute;left:0;top:-2px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid var(--oro);border-radius:50%;font-family:var(--serif);color:var(--oro)}
+.pasos li:not(:last-child)::after{content:"";position:absolute;left:19px;top:40px;bottom:2px;width:1px;background:rgba(var(--oro-rgb),.35)}
+.pasos b{display:block;color:var(--tx);font-weight:600}
+.form-card{background:var(--crema);padding:10px;border-top:4px solid var(--oro);box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.marco{display:block;width:100%;max-width:100%;height:1146px;border:0;background:#fff}
+.form-nota{margin:14px 0 0;font-size:.88rem;color:var(--tx2)}
+.form-nota a{color:var(--oro);font-weight:600}
+.caja{padding:44px 28px;text-align:center;background:var(--negro3);border:1px solid rgba(var(--oro-rgb),.3)}
+.caja p{margin:0 0 20px;color:#d8d0bf}
+.caja p:last-child{margin-bottom:0}
+.sin-config{font-style:italic;color:var(--tx2)}
 
-    @media (min-width: 700px) { .hero { padding: 72px 0 80px; } }
+/* ---- Contacto ---- */
+.con-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.tc{padding:34px 28px;background:var(--negro2);border:1px solid rgba(var(--oro-rgb),.2);transition:transform .45s var(--ease),border-color .45s,box-shadow .45s}
+.tc:hover{transform:translateY(-8px);border-color:var(--oro);box-shadow:0 22px 44px rgba(0,0,0,.5)}
+.tc h3{margin:0 0 18px;font-family:var(--serif);font-size:1.4rem;color:var(--oro)}
+.hor{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.hor:last-child{border-bottom:0}
+.hor span:first-child{font-weight:600}
+.hor span:last-child{color:var(--tx2);text-align:right}
+.tc p{margin:0 0 20px;color:#d8d0bf}
+.tc .btn{margin:0 10px 10px 0}
 
-    /* En celulares: logo algo más pequeño y formulario más alto (porque es más angosto) */
-    @media (max-width: 640px) {
-      .contenedor { padding: 0 14px; }
-      .logo { height: 40px; max-width: 120px; }
-      .tarjeta-formulario { padding: 6px; }
-      .marco-formulario { height: 1400px; }
-    }
-  </style>
+/* ---- Pie de página ---- */
+.pie{padding:60px 0 34px;background:#080808;border-top:1px solid rgba(var(--oro-rgb),.3)}
+.pie-g{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;align-items:flex-start}
+.pie-n{font-family:var(--serif);font-weight:700;font-size:1.5rem;margin:0 0 6px}
+.pie-s{margin:0;color:var(--tx2);font-size:.9rem}
+.pie ul{display:flex;flex-wrap:wrap;gap:8px 26px;list-style:none;margin:0;padding:0}
+.pie ul a{font:500 .74rem var(--sans);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--tx2);transition:color .3s}
+.pie ul a:hover{color:var(--oro)}
+.pie-leg{margin:34px 0 0;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);font-size:.8rem;color:#7d776a}
+
+/* ---- WhatsApp flotante ---- */
+.wa{position:fixed;right:18px;bottom:18px;z-index:60;width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--oro);color:var(--on-oro);box-shadow:0 8px 24px rgba(0,0,0,.45);transition:transform .35s var(--ease)}
+.wa:hover{transform:scale(1.1)}
+.wa::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--oro);animation:pulso 2.4s ease-out infinite}
+.wa svg{width:26px;height:26px}
+@keyframes pulso{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+
+/* ---- Adaptable ---- */
+@media(max-width:900px){
+  .burger{display:block}
+  .nav{position:fixed;inset:0;z-index:2;flex-direction:column;justify-content:center;gap:34px;background:rgba(8,8,8,.98);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+  .nav.abierto{opacity:1;visibility:visible}
+  .nav ul{flex-direction:column;align-items:center;gap:22px}
+  .nav a.enl{font-family:var(--serif);font-size:1.8rem;letter-spacing:.04em;text-transform:none}
+  .nav li{opacity:0;transform:translateY(20px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+  .nav.abierto li{opacity:1;transform:none;transition-delay:calc(var(--k)*70ms + 150ms)}
+  .nos-grid,.sol-grid{grid-template-columns:1fr;gap:44px}
+  .con-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  section{padding:76px 0}
+  .wrap{padding:0 18px}
+  .cab-in{padding:0 18px}
+  .svc-lista{grid-template-columns:1fr}
+  .ben-grid{grid-template-columns:1fr}
+  .gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:170px;gap:10px}
+  .g:nth-child(4){grid-column:span 2}
+  .marco{height:1400px}
+  .form-card{padding:6px}
+  .hero{padding:110px 0 90px}
+  .pie{padding-bottom:90px}
+  .scroll-ind{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0ms!important}
+  .marq-pista{animation:none}
+  [data-r]{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
+<noscript><p style="padding:20px">Esta página necesita JavaScript para mostrarse.</p></noscript>
+<div id="prog" class="prog"></div>
+<div id="avisoDemo" class="aviso" hidden>Sitio de demostración · datos ficticios</div>
+<div id="errorConfig" class="error-config" hidden></div>
 
-  <div id="avisoDemo" class="aviso-demo" hidden>
-    Sitio de demostración: los datos que ves son ficticios.
-  </div>
-
-  <div id="errorConfig" class="error-config" hidden></div>
-
-  <header class="cabecera">
-    <div class="contenedor cabecera-interior">
-      <img id="logo" class="logo" alt="" hidden>
-      <span id="nombreCabecera" class="nombre-cabecera"></span>
+<div id="app">
+  <header id="cab" class="cab">
+    <div class="cab-in">
+      <a href="#inicio" class="marca"><img id="logo" class="logo" alt="" hidden><span id="marcaNombre" class="marca-n"></span></a>
+      <nav id="panelNav" class="nav" aria-label="Principal">
+        <ul id="navLista"></ul>
+        <a id="navCta" class="btn btn-oro btn-sm" hidden>Solicitar cita</a>
+      </nav>
+      <button id="btnMenu" class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="panelNav"><span></span><span></span><span></span></button>
     </div>
   </header>
 
   <main id="contenido">
-
-    <section class="hero">
-      <div class="contenedor">
-        <p id="giro" class="giro" hidden></p>
-        <h1 id="nombreHero"></h1>
-        <p id="presentacion" class="presentacion" hidden></p>
-        <div class="hero-botones">
-          <a id="btnSolicitarHero" class="btn btn-acento" hidden>Solicitar cita</a>
-          <a id="btnWhatsHero" class="btn btn-acento" target="_blank" rel="noopener" hidden>Solicitar cita por WhatsApp</a>
+    <section id="inicio" class="hero">
+      <div class="hero-media"><img id="heroImg" class="hero-img" alt=""></div>
+      <div class="hero-vel"></div>
+      <div class="wrap hero-in">
+        <p id="giro" class="eyebrow" hidden></p>
+        <h1 id="titular" class="titular"></h1>
+        <p id="presentacion" class="hero-p" hidden></p>
+        <div class="hero-btns">
+          <a id="btnHeroForm" class="btn btn-oro" hidden>Solicitar cita</a>
+          <a class="btn btn-linea js-wa" target="_blank" rel="noopener" hidden>Escribir por WhatsApp</a>
         </div>
-        <p id="notaWhats" class="nota" hidden>Se abrirá WhatsApp con un mensaje listo para enviar. La cita no queda reservada hasta que el negocio te confirme.</p>
+        <p id="notaWa" class="nota" hidden>El botón de WhatsApp abre una conversación con un mensaje listo para enviar. La cita no queda reservada hasta que el negocio la confirme.</p>
+      </div>
+      <a href="#servicios" class="scroll-ind" aria-label="Bajar a servicios"><span></span></a>
+    </section>
+
+    <div class="poste" aria-hidden="true"></div>
+    <div id="marq" class="marq" aria-hidden="true" hidden><div id="marqPista" class="marq-pista"></div></div>
+
+    <section id="servicios" hidden>
+      <div class="wrap">
+        <p class="eyebrow" data-r>Nuestros servicios</p>
+        <h2 class="sec-t" data-r style="--d:80ms">Servicios y <em>precios</em></h2>
+        <ul id="listaServicios" class="svc-lista"></ul>
+        <div class="svc-cta" data-r><a id="btnSvcForm" class="btn btn-linea" hidden>Solicitar cita</a></div>
       </div>
     </section>
 
-    <section id="seccionServicios" hidden>
-      <div class="contenedor">
-        <h2>Servicios y precios</h2>
-        <ul id="listaServicios" class="lista-servicios"></ul>
+    <section id="nosotros" class="claro" hidden>
+      <div class="wrap nos-grid">
+        <div>
+          <p class="eyebrow" data-r>Por qué elegirnos</p>
+          <h2 class="sec-t" data-r style="--d:80ms">Detalles que <em>marcan</em> la diferencia</h2>
+          <div id="cifras" class="cifras" hidden></div>
+        </div>
+        <div id="beneficios" class="ben-grid"></div>
       </div>
     </section>
 
-    <section id="solicitar" class="seccion-formulario">
-      <div class="contenedor">
-        <h2>Solicita tu cita</h2>
-        <p class="intro-formulario">Esto es una <strong>solicitud</strong>, no una reserva automática. El negocio revisará su disponibilidad y la cita queda <strong>pendiente de confirmación</strong> hasta que te responda.</p>
+    <section id="galeria" hidden>
+      <div class="wrap centro">
+        <p class="eyebrow" data-r>Galería</p>
+        <h2 class="sec-t" data-r style="--d:80ms">Nuestro <em>trabajo</em></h2>
+        <div id="gal" class="gal"></div>
+      </div>
+    </section>
 
-        <!-- Opción 1: formulario dentro de la página -->
-        <div id="formEmbed" hidden>
-          <div class="tarjeta-formulario">
-            <iframe id="marcoFormulario" class="marco-formulario" title="Formulario para solicitar una cita" loading="lazy">Cargando formulario…</iframe>
+    <section id="solicitar" class="sol">
+      <div class="wrap sol-grid">
+        <div>
+          <p class="eyebrow" data-r>Reserva</p>
+          <h2 class="sec-t" data-r style="--d:80ms">Solicita tu <em>cita</em></h2>
+          <p class="sec-p" data-r style="--d:140ms">Esto es una <strong>solicitud</strong>, no una reserva automática. El negocio revisará su disponibilidad y la cita queda <strong>pendiente de confirmación</strong> hasta que te responda.</p>
+          <ol class="pasos" data-r style="--d:200ms">
+            <li><b>Llena la solicitud</b>Tus datos y el servicio y horario que prefieres.</li>
+            <li><b>El negocio revisa</b>Verifica su disponibilidad para esa fecha.</li>
+            <li><b>Recibes respuesta</b>La cita se confirma cuando el negocio te contacte.</li>
+          </ol>
+          <a class="btn btn-linea js-wa" target="_blank" rel="noopener" hidden>Prefiero WhatsApp</a>
+        </div>
+        <div data-r="der" style="--d:150ms">
+          <div id="formEmbed" hidden>
+            <div class="form-card"><iframe id="marco" class="marco" title="Formulario para solicitar una cita" loading="lazy">Cargando formulario…</iframe></div>
+            <p id="notaAbrir" class="form-nota" hidden>¿No se ve el formulario? <a id="enlaceForm" target="_blank" rel="noopener">Ábrelo en una pestaña nueva</a>.</p>
           </div>
-          <p id="notaAbrirForm" class="nota-formulario" hidden>
-            ¿No se ve el formulario?
-            <a id="enlaceFormulario" class="enlace-formulario" target="_blank" rel="noopener">Ábrelo en una pestaña nueva</a>.
-          </p>
-        </div>
-
-        <!-- Opción 2: botón que abre el formulario en otra pestaña -->
-        <div id="formBoton" class="caja-formulario" hidden>
-          <p>Llena el formulario con tus datos y el horario que prefieres. Se abrirá en una pestaña nueva.</p>
-          <a id="btnFormulario" class="btn btn-acento" target="_blank" rel="noopener">Solicitar cita</a>
-        </div>
-
-        <!-- Opción 3: formulario sin configurar -->
-        <div id="formNoConfig" class="caja-formulario" hidden>
-          <p class="sin-configurar">El formulario de citas aún no está configurado.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="seccionInfo" hidden>
-      <div class="contenedor">
-        <h2>Horario y ubicación</h2>
-        <div class="info-grid">
-          <div id="cardHorario" class="tarjeta" hidden>
-            <h3>Horario de atención</h3>
-            <div id="listaHorario"></div>
+          <div id="formBoton" class="caja" hidden>
+            <p>Llena el formulario con tus datos y el horario que prefieres. Se abrirá en una pestaña nueva.</p>
+            <a id="btnForm" class="btn btn-oro" target="_blank" rel="noopener">Solicitar cita</a>
           </div>
-          <div id="cardUbicacion" class="tarjeta" hidden>
-            <h3>Dónde estamos</h3>
-            <p id="direccion" class="direccion" hidden></p>
-            <a id="btnMaps" class="btn btn-borde" target="_blank" rel="noopener" hidden>Abrir en Google Maps</a>
-          </div>
+          <div id="formNoConfig" class="caja" hidden><p class="sin-config">El formulario de citas aún no está configurado.</p></div>
         </div>
       </div>
     </section>
 
-    <section id="seccionInstagram" class="centro" hidden>
-      <div class="contenedor">
-        <h2>Síguenos</h2>
-        <a id="btnInstagram" class="btn btn-borde" target="_blank" rel="noopener">Ver Instagram</a>
+    <section id="contacto" hidden>
+      <div class="wrap centro">
+        <p class="eyebrow" data-r>Contacto</p>
+        <h2 class="sec-t" data-r style="--d:80ms">Horario y <em>ubicación</em></h2>
+        <div class="con-grid" style="text-align:left">
+          <div id="cardHorario" class="tc" data-r hidden><h3>Horario</h3><div id="listaHorario"></div></div>
+          <div id="cardUbi" class="tc" data-r style="--d:100ms" hidden><h3>Ubicación</h3><p id="direccion" hidden></p><a id="btnMaps" class="btn btn-linea btn-sm" target="_blank" rel="noopener" hidden>Abrir en Google Maps</a></div>
+          <div id="cardRedes" class="tc" data-r style="--d:200ms" hidden><h3>Escríbenos</h3><p>Respondemos por mensaje para confirmar tu cita.</p><a class="btn btn-linea btn-sm js-wa" target="_blank" rel="noopener" hidden>WhatsApp</a><a id="btnIg" class="btn btn-linea btn-sm" target="_blank" rel="noopener" hidden>Instagram</a></div>
+        </div>
       </div>
     </section>
-
-    <section id="seccionCta" class="cta-final" hidden>
-      <div class="contenedor">
-        <h2>¿Quieres agendar?</h2>
-        <a id="btnWhatsFinal" class="btn btn-acento" target="_blank" rel="noopener">Solicitar cita por WhatsApp</a>
-      </div>
-    </section>
-
   </main>
 
-  <footer>
-    <div class="contenedor">
-      <p id="pie"></p>
+  <footer class="pie">
+    <div class="wrap">
+      <div class="pie-g">
+        <div><p id="pieNombre" class="pie-n"></p><p id="pieGiro" class="pie-s"></p></div>
+        <ul id="pieNav"></ul>
+      </div>
+      <p id="pieLegal" class="pie-leg"></p>
     </div>
   </footer>
 
-  <a id="btnWhatsFlotante" class="btn btn-acento flotante" target="_blank" rel="noopener" hidden>💬 WhatsApp</a>
+  <a id="waFlot" class="wa js-wa" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp" hidden>
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 5v2h10V8H7zm0 4v2h7v-2H7z"/></svg>
+  </a>
+</div>
 
-  <!-- 1) Carga los datos del negocio -->
-  <script src="config.js"></script>
+<div id="lb" class="lb" role="dialog" aria-modal="true" aria-label="Galería ampliada" hidden>
+  <button id="lbX" class="lb-x" type="button" aria-label="Cerrar">×</button>
+  <button id="lbA" class="lb-a" type="button" aria-label="Anterior">‹</button>
+  <img id="lbImg" alt="">
+  <button id="lbS" class="lb-s" type="button" aria-label="Siguiente">›</button>
+</div>
 
-  <!-- 2) Construye la página con esos datos -->
-  <script>
-  (function () {
-    "use strict";
+<script src="config.js"></script>
+<script>
+(function () {
+  "use strict";
+  function $(id) { return document.getElementById(id); }
+  function todos(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
 
-    function $(id) { return document.getElementById(id); }
+  if (typeof CONFIG === "undefined" || CONFIG === null || typeof CONFIG !== "object") {
+    $("errorConfig").textContent = "No se pudieron cargar los datos del negocio. Revisa que el archivo config.js esté en la misma carpeta que index.html, con ese nombre exacto, y que no tenga errores (comas, comillas o llaves faltantes).";
+    $("errorConfig").hidden = false;
+    $("app").hidden = true;
+    return;
+  }
+  var C = CONFIG;
 
-    function mostrarError(mensaje) {
-      var caja = $("errorConfig");
-      caja.textContent = mensaje;
-      caja.hidden = false;
-      $("contenido").hidden = true;
-    }
+  // ---------- Utilidades ----------
+  function txt(v) { return (typeof v === "string") ? v.trim() : ""; }
+  function esHttps(v) { return /^https:\/\/\S+$/i.test(txt(v)); }
+  function esHex(v) { return /^#[0-9a-f]{6}$/i.test(txt(v)); }
+  function rgb(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+  function mezclar(a, b, p) {
+    var x = rgb(a), y = rgb(b);
+    return "#" + [0, 1, 2].map(function (i) { return ("0" + Math.round(x[i] + (y[i] - x[i]) * p).toString(16)).slice(-2); }).join("");
+  }
+  function colorSobre(h) {
+    var c = rgb(h);
+    return ((0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255) > 0.6 ? "#111111" : "#ffffff";
+  }
+  function pesos(n) {
+    var d = (Math.round(n) === n) ? 0 : 2;
+    return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", minimumFractionDigits: d, maximumFractionDigits: 2 }).format(n) + " MXN";
+  }
+  function crear(tag, cls, t) {
+    var e = document.createElement(tag);
+    if (cls) { e.className = cls; }
+    if (t) { e.textContent = t; }
+    return e;
+  }
+  function rev(e, tipo, i) {
+    e.setAttribute("data-r", tipo || "");
+    e.style.setProperty("--d", ((i || 0) * 90) + "ms");
+    return e;
+  }
+  var reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Si config.js no cargó o tiene un error de sintaxis, CONFIG no existe.
-    if (typeof CONFIG === "undefined" || CONFIG === null || typeof CONFIG !== "object") {
-      mostrarError("No se pudieron cargar los datos del negocio. Revisa que el archivo config.js esté en la misma carpeta que index.html, con ese nombre exacto, y que no tenga errores (comas, comillas o llaves faltantes).");
-      return;
-    }
+  // ---------- Colores ----------
+  var neg = esHex(C.colorPrincipal) ? txt(C.colorPrincipal) : "#0c0c0c";
+  var oro = esHex(C.colorAcento) ? txt(C.colorAcento) : "#c9a24b";
+  var st = document.documentElement.style;
+  st.setProperty("--negro", neg);
+  st.setProperty("--negro2", mezclar(neg, "#ffffff", 0.06));
+  st.setProperty("--negro3", mezclar(neg, "#ffffff", 0.12));
+  st.setProperty("--oro", oro);
+  st.setProperty("--oro-rgb", rgb(oro).join(","));
+  st.setProperty("--oro-osc", mezclar(oro, "#000000", 0.42));
+  st.setProperty("--on-oro", colorSobre(oro));
 
-    var C = CONFIG;
+  // ---------- Textos principales ----------
+  var nombre = txt(C.nombreNegocio) || "Mi negocio";
+  var giro = txt(C.giro);
+  var pres = txt(C.presentacion);
+  document.title = giro ? (nombre + " | " + giro) : nombre;
+  $("metaDescripcion").setAttribute("content", pres || nombre);
+  $("marcaNombre").textContent = nombre;
+  $("pieNombre").textContent = nombre;
+  if (giro) {
+    $("giro").textContent = giro; $("giro").hidden = false;
+    $("pieGiro").textContent = giro;
+  }
+  if (pres) { $("presentacion").textContent = pres; $("presentacion").hidden = false; }
+  if (C.modoDemo === true) { $("avisoDemo").hidden = false; }
 
-    // ---------- Utilidades ----------
-    function texto(valor) {
-      return (typeof valor === "string") ? valor.trim() : "";
-    }
-    function esUrlHttps(valor) {
-      return /^https:\/\/\S+$/i.test(texto(valor));
-    }
-    function esUrlIncrustable(valor) {
-      return /^https:\/\/docs\.google\.com\/forms\/\S+$/i.test(texto(valor));
-    }
-    function esUrlFormularioPublico(valor) {
-      return /^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)\S+$/i.test(texto(valor));
-    }
-    function esColorHex(valor) {
-      return /^#[0-9a-f]{6}$/i.test(texto(valor));
-    }
-    function colorTextoSobre(hex) {
-      var r = parseInt(hex.slice(1, 3), 16);
-      var g = parseInt(hex.slice(3, 5), 16);
-      var b = parseInt(hex.slice(5, 7), 16);
-      var luminosidad = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-      return luminosidad > 0.6 ? "#111111" : "#ffffff";
-    }
-    function formatoPesos(numero) {
-      var decimales = (Math.round(numero) === numero) ? 0 : 2;
-      return new Intl.NumberFormat("es-MX", {
-        style: "currency",
-        currency: "MXN",
-        minimumFractionDigits: decimales,
-        maximumFractionDigits: 2
-      }).format(numero) + " MXN";
-    }
-    function crear(etiqueta, clase, contenido) {
-      var el = document.createElement(etiqueta);
-      if (clase) { el.className = clase; }
-      if (contenido) { el.textContent = contenido; }
-      return el;
-    }
+  // Titular palabra por palabra
+  var palabras = (txt(C.titularHero) || nombre).split(/\s+/);
+  var h1 = $("titular");
+  palabras.forEach(function (p, i) {
+    var w = crear("span", "palabra" + (i === palabras.length - 1 && palabras.length > 1 ? " acento" : ""));
+    var s = crear("span", "", p);
+    s.style.setProperty("--i", i);
+    w.appendChild(s);
+    h1.appendChild(w);
+    h1.appendChild(document.createTextNode(" "));
+  });
 
-    // ---------- Colores ----------
-    var raiz = document.documentElement;
-    if (esColorHex(C.colorPrincipal)) {
-      raiz.style.setProperty("--principal", texto(C.colorPrincipal));
-      raiz.style.setProperty("--on-principal", colorTextoSobre(texto(C.colorPrincipal)));
-    }
-    if (esColorHex(C.colorAcento)) {
-      raiz.style.setProperty("--acento", texto(C.colorAcento));
-      raiz.style.setProperty("--on-acento", colorTextoSobre(texto(C.colorAcento)));
-    }
+  // ---------- Logo (cabecera) ----------
+  var rutaLogo = txt(C.logo);
+  if (rutaLogo) {
+    var lg = $("logo");
+    if (C.logoRedondeado !== false) { lg.classList.add("redondo"); }
+    lg.alt = "Logo de " + nombre;
+    lg.onload = function () { lg.hidden = false; };
+    lg.onerror = function () { lg.hidden = true; };
+    lg.src = rutaLogo;
+  }
 
-    // ---------- Nombre, título y descripción ----------
-    var nombre = texto(C.nombreNegocio) || "Mi negocio";
-    var giro = texto(C.giro);
-    document.title = giro ? (nombre + " | " + giro) : nombre;
-    $("nombreCabecera").textContent = nombre;
-    $("nombreHero").textContent = nombre;
+  // ---------- Foto de portada ----------
+  var rutaHero = txt(C.imagenHero);
+  var hi = $("heroImg");
+  if (rutaHero) {
+    hi.onload = function () { hi.classList.add("cargada"); document.querySelector(".hero").classList.add("con-foto"); };
+    hi.onerror = function () { hi.remove(); };
+    hi.src = rutaHero;
+  } else { hi.remove(); }
 
-    var presentacion = texto(C.presentacion);
-    $("metaDescripcion").setAttribute("content", presentacion || nombre);
+  // ---------- WhatsApp ----------
+  var dig = txt(String(C.telefonoWhatsApp == null ? "" : C.telefonoWhatsApp)).replace(/\D/g, "");
+  if (dig.length === 10) { dig = "52" + dig; }
+  var waOk = dig.length >= 11 && dig.length <= 15;
+  var enlaceWa = "";
+  if (waOk) {
+    var msg = (txt(C.mensajeWhatsApp) || "Hola, me gustaría solicitar una cita en {negocio}.").split("{negocio}").join(nombre);
+    enlaceWa = "https://wa.me/" + dig + "?text=" + encodeURIComponent(msg);
+    todos(".js-wa").forEach(function (a) { a.href = enlaceWa; a.hidden = false; });
+    $("notaWa").hidden = false;
+  } else {
+    console.warn("config.js: telefonoWhatsApp no es válido. Se ocultaron los botones de WhatsApp.");
+  }
 
-    if (giro) { $("giro").textContent = giro; $("giro").hidden = false; }
-    if (presentacion) { $("presentacion").textContent = presentacion; $("presentacion").hidden = false; }
+  // ---------- Formulario ----------
+  var urlInc = /^https:\/\/docs\.google\.com\/forms\/\S+$/i.test(txt(C.formularioUrlIncrustar)) ? txt(C.formularioUrlIncrustar) : "";
+  var urlPub = /^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)\S+$/i.test(txt(C.formularioUrlPublica)) ? txt(C.formularioUrlPublica) : "";
+  if (txt(C.formularioUrlIncrustar) && !urlInc) { console.warn("config.js: formularioUrlIncrustar no parece un enlace de Google Forms. Se ignoró."); }
+  if (txt(C.formularioUrlPublica) && !urlPub) { console.warn("config.js: formularioUrlPublica no parece un enlace de Google Forms. Se ignoró."); }
+  if (urlInc && urlInc.indexOf("embedded=true") === -1) { urlInc += (urlInc.indexOf("?") === -1 ? "?" : "&") + "embedded=true"; }
+  if (!urlPub && urlInc) { urlPub = urlInc.replace("?embedded=true&", "?").replace(/[?&]embedded=true/, ""); }
 
-    // ---------- Aviso de demostración ----------
-    if (C.modoDemo === true) { $("avisoDemo").hidden = false; }
+  var hrefCita = "", abreFuera = false;
+  if (urlInc) {
+    $("marco").src = urlInc;
+    $("formEmbed").hidden = false;
+    if (urlPub) { $("enlaceForm").href = urlPub; $("notaAbrir").hidden = false; }
+    hrefCita = "#solicitar";
+  } else if (urlPub) {
+    $("btnForm").href = urlPub;
+    $("formBoton").hidden = false;
+    hrefCita = urlPub; abreFuera = true;
+  } else {
+    $("formNoConfig").hidden = false;
+  }
+  [$("btnHeroForm"), $("btnSvcForm"), $("navCta")].forEach(function (b) {
+    var h = hrefCita, fuera = abreFuera;
+    if (!h && b === $("navCta") && waOk) { h = enlaceWa; fuera = true; }
+    if (!h) { return; }
+    b.href = h;
+    if (fuera) { b.target = "_blank"; b.rel = "noopener"; }
+    b.hidden = false;
+  });
 
-    // ---------- Logo (solo se muestra si carga bien) ----------
-    var rutaLogo = texto(C.logo);
-    if (rutaLogo) {
-      var img = $("logo");
-      if (C.logoRedondeado !== false) { img.classList.add("redondo"); }
-      img.alt = "Logo de " + nombre;
-      img.onload = function () { img.hidden = false; };
-      img.onerror = function () { img.hidden = true; };
-      img.src = rutaLogo;
-    }
-
-    // ---------- WhatsApp ----------
-    var digitos = texto(String(C.telefonoWhatsApp == null ? "" : C.telefonoWhatsApp)).replace(/\D/g, "");
-    if (digitos.length === 10) { digitos = "52" + digitos; }
-    var telefonoValido = digitos.length >= 11 && digitos.length <= 15;
-
-    if (telefonoValido) {
-      var mensaje = texto(C.mensajeWhatsApp) || "Hola, me gustaría solicitar una cita en {negocio}.";
-      mensaje = mensaje.split("{negocio}").join(nombre);
-      var enlaceWhats = "https://wa.me/" + digitos + "?text=" + encodeURIComponent(mensaje);
-
-      ["btnWhatsHero", "btnWhatsFinal", "btnWhatsFlotante"].forEach(function (id) {
-        $(id).href = enlaceWhats;
-        $(id).hidden = false;
-      });
-      $("notaWhats").hidden = false;
-      $("seccionCta").hidden = false;
-    } else {
-      console.warn("config.js: telefonoWhatsApp no es válido. Se ocultaron los botones de WhatsApp.");
-    }
-
-    // ---------- Servicios ----------
-    var servicios = Array.isArray(C.servicios) ? C.servicios : [];
-    var lista = $("listaServicios");
-    var totalServicios = 0;
-    servicios.forEach(function (s) {
-      if (!s || typeof s !== "object" || !texto(s.nombre)) { return; }
-      var item = crear("li", "servicio");
-      item.appendChild(crear("h3", "", texto(s.nombre)));
-      if (texto(s.descripcion)) { item.appendChild(crear("p", "", texto(s.descripcion))); }
-      var precioTexto = (typeof s.precio === "number" && isFinite(s.precio) && s.precio >= 0)
-        ? formatoPesos(s.precio)
-        : "Consultar precio";
-      item.appendChild(crear("span", "precio", precioTexto));
-      lista.appendChild(item);
-      totalServicios++;
+  // ---------- Servicios ----------
+  var servicios = (Array.isArray(C.servicios) ? C.servicios : []).filter(function (s) { return s && typeof s === "object" && txt(s.nombre); });
+  if (servicios.length) {
+    var ul = $("listaServicios");
+    servicios.forEach(function (s, i) {
+      var li = rev(crear("li", "svc"), "", i % 2);
+      li.appendChild(crear("span", "svc-n", ("0" + (i + 1)).slice(-2)));
+      var cuerpo = crear("div");
+      var top = crear("div", "svc-top");
+      top.appendChild(crear("h3", "", txt(s.nombre)));
+      top.appendChild(crear("span", "svc-pt"));
+      var ok = typeof s.precio === "number" && isFinite(s.precio) && s.precio >= 0;
+      top.appendChild(crear("span", "svc-precio" + (ok ? "" : " consulta"), ok ? pesos(s.precio) : "Consultar"));
+      cuerpo.appendChild(top);
+      if (txt(s.descripcion)) { cuerpo.appendChild(crear("p", "", txt(s.descripcion))); }
+      if (s.destacado === true) { cuerpo.appendChild(crear("span", "etiqueta", "Favorito")); }
+      li.appendChild(cuerpo);
+      ul.appendChild(li);
     });
-    if (totalServicios > 0) { $("seccionServicios").hidden = false; }
+    $("servicios").hidden = false;
 
-    // ---------- Formulario de solicitud de cita (Google Forms) ----------
-    var urlIncrustar = esUrlIncrustable(C.formularioUrlIncrustar) ? texto(C.formularioUrlIncrustar) : "";
-    var urlPublica = esUrlFormularioPublico(C.formularioUrlPublica) ? texto(C.formularioUrlPublica) : "";
-
-    if (texto(C.formularioUrlIncrustar) && !urlIncrustar) {
-      console.warn("config.js: formularioUrlIncrustar no parece un enlace de Google Forms. Se ignoró.");
-    }
-    if (texto(C.formularioUrlPublica) && !urlPublica) {
-      console.warn("config.js: formularioUrlPublica no parece un enlace de Google Forms. Se ignoró.");
-    }
-
-    // Si falta "embedded=true" en el enlace de inserción, se agrega.
-    if (urlIncrustar && urlIncrustar.indexOf("embedded=true") === -1) {
-      urlIncrustar += (urlIncrustar.indexOf("?") === -1 ? "?" : "&") + "embedded=true";
-    }
-    // Si no hay enlace público pero sí de inserción, se deriva quitando "embedded=true".
-    if (!urlPublica && urlIncrustar) {
-      urlPublica = urlIncrustar.replace("?embedded=true&", "?").replace(/[?&]embedded=true/, "");
-    }
-
-    var btnHero = $("btnSolicitarHero");
-    if (urlIncrustar) {
-      // Formulario dentro de la página. El botón superior baja hasta él.
-      $("marcoFormulario").src = urlIncrustar;
-      $("formEmbed").hidden = false;
-      btnHero.href = "#solicitar";
-      btnHero.hidden = false;
-      if (urlPublica) {
-        $("enlaceFormulario").href = urlPublica;
-        $("notaAbrirForm").hidden = false;
+    // Franja que se desplaza con los nombres de los servicios
+    var veces = Math.max(1, Math.ceil(8 / servicios.length));
+    var pista = $("marqPista");
+    for (var c = 0; c < 2; c++) {
+      var g = crear("div", "marq-g");
+      for (var v = 0; v < veces; v++) {
+        servicios.forEach(function (s) {
+          g.appendChild(crear("span", "", txt(s.nombre)));
+          g.appendChild(crear("i", "", "✦"));
+        });
       }
-    } else if (urlPublica) {
-      // Solo hay enlace público: botón que abre el formulario en otra pestaña.
-      $("btnFormulario").href = urlPublica;
-      $("formBoton").hidden = false;
-      btnHero.href = urlPublica;
-      btnHero.target = "_blank";
-      btnHero.rel = "noopener";
-      btnHero.hidden = false;
-    } else {
-      // Sin formulario configurado: mensaje claro, sin enlaces falsos.
-      $("formNoConfig").hidden = false;
+      pista.appendChild(g);
     }
+    $("marq").hidden = false;
+  }
 
-    // ---------- Horario ----------
-    var horario = Array.isArray(C.horario) ? C.horario : [];
-    var contHorario = $("listaHorario");
-    var totalHorario = 0;
-    horario.forEach(function (h) {
-      if (!h || typeof h !== "object" || !texto(h.dia)) { return; }
-      var fila = crear("div", "fila-horario");
-      fila.appendChild(crear("span", "", texto(h.dia)));
-      fila.appendChild(crear("span", "", texto(h.horas)));
-      contHorario.appendChild(fila);
-      totalHorario++;
+  // ---------- Beneficios y cifras ----------
+  var bens = (Array.isArray(C.beneficios) ? C.beneficios : []).filter(function (b) { return b && txt(b.titulo); });
+  var cifras = (Array.isArray(C.cifras) ? C.cifras : []).filter(function (x) { return x && typeof x.valor === "number" && isFinite(x.valor); });
+  if (bens.length || cifras.length) {
+    var bc = $("beneficios");
+    bens.forEach(function (b, i) {
+      var d = rev(crear("div", "ben"), "", i);
+      d.appendChild(crear("span", "ben-i", "✦"));
+      d.appendChild(crear("h3", "", txt(b.titulo)));
+      if (txt(b.texto)) { d.appendChild(crear("p", "", txt(b.texto))); }
+      bc.appendChild(d);
     });
-    if (totalHorario > 0) { $("cardHorario").hidden = false; }
-
-    // ---------- Dirección y Google Maps ----------
-    var direccion = texto(C.direccion);
-    var tieneUbicacion = false;
-    if (direccion) {
-      $("direccion").textContent = direccion;
-      $("direccion").hidden = false;
-      tieneUbicacion = true;
+    if (cifras.length) {
+      var cf = $("cifras");
+      cifras.forEach(function (x) {
+        var d = crear("div", "cifra");
+        var n = crear("b", "", "0" + txt(x.sufijo));
+        n.setAttribute("data-n", x.valor);
+        n.setAttribute("data-s", txt(x.sufijo));
+        rev(n, "zoom", 0);
+        d.appendChild(n);
+        d.appendChild(crear("span", "", txt(x.etiqueta)));
+        cf.appendChild(d);
+      });
+      cf.hidden = false;
     }
-    if (esUrlHttps(C.enlaceMaps)) {
-      $("btnMaps").href = texto(C.enlaceMaps);
-      $("btnMaps").hidden = false;
-      tieneUbicacion = true;
+    $("nosotros").hidden = false;
+  }
+
+  // ---------- Contacto ----------
+  var horario = (Array.isArray(C.horario) ? C.horario : []).filter(function (h) { return h && txt(h.dia); });
+  var dir = txt(C.direccion);
+  var mapsOk = esHttps(C.enlaceMaps), igOk = esHttps(C.enlaceInstagram);
+  if (horario.length) {
+    horario.forEach(function (h) {
+      var f = crear("div", "hor");
+      f.appendChild(crear("span", "", txt(h.dia)));
+      f.appendChild(crear("span", "", txt(h.horas)));
+      $("listaHorario").appendChild(f);
+    });
+    $("cardHorario").hidden = false;
+  }
+  if (dir) { $("direccion").textContent = dir; $("direccion").hidden = false; }
+  if (mapsOk) { $("btnMaps").href = txt(C.enlaceMaps); $("btnMaps").hidden = false; }
+  if (dir || mapsOk) { $("cardUbi").hidden = false; }
+  if (igOk) {
+    var etiqueta = "Instagram";
+    try {
+      var partes = new URL(txt(C.enlaceInstagram)).pathname.split("/").filter(Boolean);
+      if (partes.length) { etiqueta = "Instagram @" + partes[0]; }
+    } catch (e) { /* se queda el texto genérico */ }
+    $("btnIg").textContent = etiqueta;
+    $("btnIg").href = txt(C.enlaceInstagram);
+    $("btnIg").hidden = false;
+  }
+  if (waOk || igOk) { $("cardRedes").hidden = false; }
+  if (horario.length || dir || mapsOk || waOk || igOk) { $("contacto").hidden = false; }
+
+  // ---------- Pie de página ----------
+  $("pieLegal").textContent = "© " + new Date().getFullYear() + " " + nombre + ". Las citas son solicitudes sujetas a confirmación del negocio.";
+
+  // ---------- Revelado y contadores ----------
+  function contar(n) {
+    var f = parseFloat(n.getAttribute("data-n")) || 0, s = n.getAttribute("data-s") || "";
+    if (reducido) { n.textContent = f.toLocaleString("es-MX") + s; return; }
+    var t0 = null;
+    function paso(t) {
+      if (!t0) { t0 = t; }
+      var k = Math.min((t - t0) / 1500, 1);
+      n.textContent = Math.round(f * (1 - Math.pow(1 - k, 3))).toLocaleString("es-MX") + s;
+      if (k < 1) { requestAnimationFrame(paso); }
     }
-    if (tieneUbicacion) { $("cardUbicacion").hidden = false; }
+    requestAnimationFrame(paso);
+  }
+  function mostrar(n) {
+    n.classList.add("vis");
+    if (n.hasAttribute("data-n")) { contar(n); }
+  }
+  var io = ("IntersectionObserver" in window && !reducido) ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { mostrar(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }) : null;
+  function observar() {
+    todos("[data-r]:not(.obs)").forEach(function (n) {
+      n.classList.add("obs");
+      if (io) { io.observe(n); } else { mostrar(n); }
+    });
+  }
 
-    if (totalHorario > 0 || tieneUbicacion) { $("seccionInfo").hidden = false; }
-
-    // ---------- Instagram ----------
-    if (esUrlHttps(C.enlaceInstagram)) {
-      var etiquetaIg = "Ver Instagram";
-      try {
-        var partes = new URL(texto(C.enlaceInstagram)).pathname.split("/").filter(Boolean);
-        if (partes.length > 0) { etiquetaIg = "Instagram @" + partes[0]; }
-      } catch (e) { /* si falla, se queda el texto genérico */ }
-      $("btnInstagram").textContent = etiquetaIg;
-      $("btnInstagram").href = texto(C.enlaceInstagram);
-      $("seccionInstagram").hidden = false;
+  // ---------- Navegación ----------
+  var secciones = [["servicios", "Servicios"], ["nosotros", "Nosotros"], ["galeria", "Galería"], ["solicitar", "Cita"], ["contacto", "Contacto"]];
+  function armarNav() {
+    var ulN = $("navLista"), ulP = $("pieNav"), k = 0, ids = [];
+    secciones.forEach(function (s) {
+      if ($(s[0]).hidden) { return; }
+      var li = crear("li"); li.style.setProperty("--k", k++);
+      var a = crear("a", "enl", s[1]); a.href = "#" + s[0];
+      li.appendChild(a); ulN.appendChild(li);
+      var lp = crear("li"), ap = crear("a", "", s[1]); ap.href = "#" + s[0];
+      lp.appendChild(ap); ulP.appendChild(lp);
+      ids.push(s[0]);
+    });
+    if ("IntersectionObserver" in window) {
+      var spy = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) { return; }
+          todos(".nav a.enl").forEach(function (a) { a.classList.toggle("activo", a.getAttribute("href") === "#" + e.target.id); });
+        });
+      }, { rootMargin: "-45% 0px -50% 0px" });
+      ids.forEach(function (id) { spy.observe($(id)); });
     }
+  }
 
-    // ---------- Pie de página ----------
-    $("pie").textContent = "© " + new Date().getFullYear() + " " + nombre;
-  })();
-  </script>
+  // Menú móvil
+  var nav = $("panelNav"), bm = $("btnMenu");
+  function menu(abrir) {
+    nav.classList.toggle("abierto", abrir);
+    bm.setAttribute("aria-expanded", abrir ? "true" : "false");
+    bm.setAttribute("aria-label", abrir ? "Cerrar menú" : "Abrir menú");
+    document.body.classList.toggle("sin-scroll", abrir);
+  }
+  bm.addEventListener("click", function () { menu(!nav.classList.contains("abierto")); });
+  nav.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("a")) { menu(false); } });
+  window.addEventListener("resize", function () { if (window.innerWidth > 900) { menu(false); } });
+
+  // ---------- Galería (solo se muestran las fotos que existen) ----------
+  var lista = (Array.isArray(C.galeria) ? C.galeria : []).filter(function (x) { return x && txt(x.src); });
+  var gal = $("gal"), pend = lista.length, terminado = false, imgs = [];
+
+  function finGaleria() {
+    if (terminado) { return; }
+    terminado = true;
+    imgs.sort(function (a, b) { return a.i - b.i; }).forEach(function (o, k) {
+      var b = rev(crear("button", "g"), "zoom", k % 3);
+      b.type = "button";
+      b.setAttribute("aria-label", "Ampliar foto: " + o.alt);
+      o.img.alt = o.alt;
+      b.appendChild(o.img);
+      b.addEventListener("click", function () { lbAbrir(Array.prototype.indexOf.call(gal.children, b)); });
+      gal.appendChild(b);
+    });
+    if (gal.children.length) { $("galeria").hidden = false; }
+    armarNav();
+    observar();
+  }
+  if (!pend) { finGaleria(); }
+  lista.forEach(function (x, i) {
+    var im = new Image();
+    im.decoding = "async";
+    im.onload = function () { imgs.push({ i: i, img: im, alt: txt(x.alt) || ("Foto " + (i + 1) + " de " + nombre) }); if (--pend === 0) { finGaleria(); } };
+    im.onerror = function () { if (--pend === 0) { finGaleria(); } };
+    im.src = txt(x.src);
+  });
+  setTimeout(finGaleria, 6000);
+
+  // ---------- Visor de fotos ----------
+  var lbIdx = 0;
+  function lbPoner() {
+    var b = gal.children[lbIdx], im = b.querySelector("img");
+    $("lbImg").src = im.src; $("lbImg").alt = im.alt;
+  }
+  function lbAbrir(i) {
+    lbIdx = i; lbPoner();
+    $("lb").hidden = false;
+    document.body.classList.add("sin-scroll");
+    $("lbX").focus();
+  }
+  function lbCerrar() { $("lb").hidden = true; document.body.classList.remove("sin-scroll"); }
+  function lbMover(d) { lbIdx = (lbIdx + d + gal.children.length) % gal.children.length; lbPoner(); }
+  $("lbX").addEventListener("click", lbCerrar);
+  $("lbA").addEventListener("click", function () { lbMover(-1); });
+  $("lbS").addEventListener("click", function () { lbMover(1); });
+  $("lb").addEventListener("click", function (e) { if (e.target === $("lb")) { lbCerrar(); } });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { if (!$("lb").hidden) { lbCerrar(); } else { menu(false); } }
+    if (!$("lb").hidden) {
+      if (e.key === "ArrowLeft") { lbMover(-1); }
+      if (e.key === "ArrowRight") { lbMover(1); }
+    }
+  });
+
+  // ---------- Desplazamiento: cabecera, progreso y parallax ----------
+  var cab = $("cab"), prog = $("prog"), hm = document.querySelector(".hero-media"), espera = false;
+  function alScroll() {
+    if (espera) { return; }
+    espera = true;
+    requestAnimationFrame(function () {
+      var y = window.pageYOffset || 0;
+      var total = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+      cab.classList.toggle("solida", y > 40);
+      prog.style.transform = "scaleX(" + Math.min(y / total, 1) + ")";
+      if (!reducido && y < window.innerHeight * 1.2) { hm.style.transform = "translate3d(0," + (y * 0.22) + "px,0)"; }
+      espera = false;
+    });
+  }
+  window.addEventListener("scroll", alScroll, { passive: true });
+  alScroll();
+})();
+</script>
 </body>
 </html>
+<!-- FIN index.html -->
