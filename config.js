@@ -11,7 +11,7 @@ const CONFIG = {
   modoDemo: true,
 
   // Nombre del negocio. Ejemplo: "Barbería El Corte"
-  nombreNegocio: "Negocio de Ejemplo (DEMO)",
+  nombreNegocio: "(DEMO) Barber Shop",
 
   // Tipo de negocio, aparece sobre el titular. "" para ocultar.
   giro: "Barbería",
@@ -25,7 +25,7 @@ const CONFIG = {
 
   // WhatsApp: solo números, sin espacios ni +. Con código de país ("524771234567")
   // o solo 10 dígitos ("4771234567"). Este número es FALSO.
-  telefonoWhatsApp: "525500000000",
+  telefonoWhatsApp: "524778017391",
 
   // Mensaje preescrito. {negocio} se reemplaza por el nombre. "" = mensaje por defecto.
   mensajeWhatsApp: "Hola, me gustaría solicitar una cita en {negocio}. ¿Qué horarios tienen disponibles?",
